@@ -44,7 +44,7 @@ release-snapshot:
 		--privileged \
 		-e CGO_ENABLED=1 \
 		-e GITHUB_USER=${GITHUB_USER} \
-		-e GITHUB_TOKEN=${GITHUB_TOKEN} \
+		-e GITHUB_TOKEN=${GORELEASER_ACCESS_TOKEN} \
 		--env-file .release-env \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
@@ -60,7 +60,7 @@ release:
 		--privileged \
 		-e CGO_ENABLED=1 \
 		-e GITHUB_USER=${GITHUB_USER} \
-		-e GITHUB_TOKEN=${GITHUB_TOKEN} \
+		-e GITHUB_TOKEN=${GORELEASER_ACCESS_TOKEN} \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
 		-v `pwd`/sysroot:/sysroot \
