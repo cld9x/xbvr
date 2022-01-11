@@ -2,6 +2,7 @@ before:
   hooks:
     - go mod download
     - go generate ./...
+    - docker login ghcr.io -u {{ .Env.GITHUB_USER }} -p {{ .Env.GITHUB_TOKEN }}
 
 builds:
 - id: xbvr-mac-intel

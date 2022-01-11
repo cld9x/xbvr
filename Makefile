@@ -17,6 +17,8 @@ release-dry-run-snapshot:
 		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
+		-e GITHUB_USER=${GITHUB_USER} \
+		-e GITHUB_TOKEN=${GITHUB_TOKEN} \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
 		-v `pwd`/sysroot:/sysroot \
@@ -30,6 +32,8 @@ release-dry-run:
 		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
+		-e GITHUB_USER=${GITHUB_USER} \
+		-e GITHUB_TOKEN=${GITHUB_TOKEN} \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
 		-v `pwd`/sysroot:/sysroot \
@@ -47,6 +51,8 @@ release-snapshot:
 		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
+		-e GITHUB_USER=${GITHUB_USER} \
+		-e GITHUB_TOKEN=${GITHUB_TOKEN} \
 		--env-file .release-env \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
@@ -65,7 +71,8 @@ release:
 		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
-		--env-file .release-env \
+		-e GITHUB_USER=${GITHUB_USER} \
+		-e GITHUB_TOKEN=${GITHUB_TOKEN} \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
 		-v `pwd`/sysroot:/sysroot \
