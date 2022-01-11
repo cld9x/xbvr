@@ -4,7 +4,7 @@ before:
     - go generate ./...
 
 builds:
-- id: xbvr-mac
+- id: xbvr-mac-intel
   binary: xbvr
 #  main: pkg/tray/main.go
   flags:
@@ -19,6 +19,24 @@ builds:
     - darwin
   goarch:
     - amd64
+#  hooks:
+#    post: ./appify.sh -s ./dist/xbvr-mac_darwin_amd64/XBVR.app/Contents/MacOS/XBVR -i ./ui/public/icons/xbvr-mac.icns -n XBVR
+
+- id: xbvr-mac-m1
+  binary: xbvr
+#  main: pkg/tray/main.go
+  flags:
+    - -tags=json1
+  ldflags:
+    - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
+  env:
+    - CGO_ENABLED=1
+    - CC=o64-clang
+    - CXX=o64-clang++
+  goos:
+    - darwin
+  goarch:
+    - arm64
 #  hooks:
 #    post: ./appify.sh -s ./dist/xbvr-mac_darwin_amd64/XBVR.app/Contents/MacOS/XBVR -i ./ui/public/icons/xbvr-mac.icns -n XBVR
 
@@ -61,6 +79,36 @@ builds:
   goarch:
     - arm64
 
+dockers:
+  -
+    use: buildx
+    dockerfile: Dockerfile
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - ghcr.io/cld9x/xbvr:{{ .Version }}-amd64
+    build_flag_templates:
+      - --platform=linux/amd64
+      - --no-cache
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+  -
+    use: buildx
+    dockerfile: Dockerfile
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - ghcr.io/cld9x/xbvr:{{ .Version }}-arm64
+    build_flag_templates:
+      - --platform=linux/arm64
+      - --no-cache
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+
 archives:
 - id: archive-linux
   builds:
@@ -78,10 +126,13 @@ archives:
     windows: Windows
 - id: archive-mac
   builds:
-    - xbvr-mac
+    - xbvr-mac-intel
+    - xbvr-mac-m1
   format: zip
   replacements:
     darwin: macOS
+    amd64: intel
+    arm64: m1
 #  files:
 #    - XBVR.app/Contents/Resources/XBVR.icns
 #    - XBVR.app/Contents/Info.plist
@@ -99,5 +150,5 @@ changelog:
 release:
   disable: false
   github:
-    owner: xbapps
+    owner: cld9x
     name: xbvr
