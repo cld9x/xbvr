@@ -39,12 +39,14 @@ release-dry-run:
 
 .PHONY: release-snapshot
 release-snapshot:
-	@docker run \
+	@if [ ! -f ".release-env" ]; then \
+		echo "\033[91m.release-env is required for release\033[0m";\
+		exit 1;\
+	fi
+	docker run \
 		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
-		-e GITHUB_USER=${GITHUB_USER} \
-		-e GITHUB_TOKEN=${GORELEASER_ACCESS_TOKEN} \
 		--env-file .release-env \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
@@ -55,12 +57,15 @@ release-snapshot:
 
 .PHONY: release
 release:
-	@docker run \
+	@if [ ! -f ".release-env" ]; then \
+		echo "\033[91m.release-env is required for release\033[0m";\
+		exit 1;\
+	fi
+	docker run \
 		--rm \
 		--privileged \
 		-e CGO_ENABLED=1 \
-		-e GITHUB_USER=${GITHUB_USER} \
-		-e GITHUB_TOKEN=${GORELEASER_ACCESS_TOKEN} \
+		--env-file .release-env \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src \
 		-v `pwd`/sysroot:/sysroot \

@@ -26,5 +26,10 @@ jobs:
       - name: Build UI
         run:  cd ui && yarn install && yarn build
 
+      - name: Setup release environment
+        run: |-
+          echo 'GITHUB_TOKEN=${{secrets.GORELEASER_ACCESS_TOKEN}}' > .release-env
+          echo 'GITHUB_USER=${{env.GITHUB_USER}}' >> .release-env
+
       - name: Release publish
         run: make release
