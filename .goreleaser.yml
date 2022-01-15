@@ -5,57 +5,57 @@ before:
     - echo {{.Env.GITHUB_TOKEN}} | docker login ghcr.io -u {{.Env.GITHUB_USER}} --password-stdin
 
 builds:
-# - id: xbvr-mac-intel
-#   binary: xbvr
-# #  main: pkg/tray/main.go
-#   flags:
-#     - -tags=json1
-#   ldflags:
-#     - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
-#   env:
-#     - CGO_ENABLED=1
-#     - CC=o64-clang
-#     - CXX=o64-clang++
-#   goos:
-#     - darwin
-#   goarch:
-#     - amd64
-# #  hooks:
-# #    post: ./appify.sh -s ./dist/xbvr-mac_darwin_amd64/XBVR.app/Contents/MacOS/XBVR -i ./ui/public/icons/xbvr-mac.icns -n XBVR
+- id: xbvr-mac-intel
+  binary: xbvr
+#  main: pkg/tray/main.go
+  flags:
+    - -tags=json1
+  ldflags:
+    - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
+  env:
+    - CGO_ENABLED=1
+    - CC=o64-clang
+    - CXX=o64-clang++
+  goos:
+    - darwin
+  goarch:
+    - amd64
+#  hooks:
+#    post: ./appify.sh -s ./dist/xbvr-mac_darwin_amd64/XBVR.app/Contents/MacOS/XBVR -i ./ui/public/icons/xbvr-mac.icns -n XBVR
 
-# - id: xbvr-mac-m1
-#   binary: xbvr
-# #  main: pkg/tray/main.go
-#   flags:
-#     - -tags=json1
-#   ldflags:
-#     - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
-#   env:
-#     - CGO_ENABLED=1
-#     - CC=o64-clang
-#     - CXX=o64-clang++
-#   goos:
-#     - darwin
-#   goarch:
-#     - arm64
-# #  hooks:
-# #    post: ./appify.sh -s ./dist/xbvr-mac_darwin_amd64/XBVR.app/Contents/MacOS/XBVR -i ./ui/public/icons/xbvr-mac.icns -n XBVR
+- id: xbvr-mac-m1
+  binary: xbvr
+#  main: pkg/tray/main.go
+  flags:
+    - -tags=json1
+  ldflags:
+    - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
+  env:
+    - CGO_ENABLED=1
+    - CC=o64-clang
+    - CXX=o64-clang++
+  goos:
+    - darwin
+  goarch:
+    - arm64
+#  hooks:
+#    post: ./appify.sh -s ./dist/xbvr-mac_darwin_amd64/XBVR.app/Contents/MacOS/XBVR -i ./ui/public/icons/xbvr-mac.icns -n XBVR
 
-# - id: xbvr-windows
-#   binary: xbvr
-#   main: pkg/tray/main.go
-#   flags:
-#     - -tags=json1
-#   ldflags:
-#     - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}} -H windowsgui
-#   env:
-#     - CGO_ENABLED=1
-#     - CC=x86_64-w64-mingw32-gcc
-#     - CXX=x86_64-w64-mingw32-g++
-#   goos:
-#     - windows
-#   goarch:
-#     - amd64
+- id: xbvr-windows
+  binary: xbvr
+  main: pkg/tray/main.go
+  flags:
+    - -tags=json1
+  ldflags:
+    - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}} -H windowsgui
+  env:
+    - CGO_ENABLED=1
+    - CC=x86_64-w64-mingw32-gcc
+    - CXX=x86_64-w64-mingw32-g++
+  goos:
+    - windows
+  goarch:
+    - amd64
 
 - id: xbvr-linux-amd64
   binary: xbvr
@@ -87,7 +87,7 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "ghcr.io/{{.Env.GITHUB_USER}}/xbvr:{{ .Version }}-amd64"
+      - "ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}-amd64"
     build_flag_templates:
       - --platform=linux/amd64
       - --no-cache
@@ -101,7 +101,7 @@ dockers:
     goos: linux
     goarch: arm64
     image_templates:
-      - "ghcr.io/{{.Env.GITHUB_USER}}/xbvr:{{ .Version }}-arm64"
+      - "ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}-arm64"
     build_flag_templates:
       - --platform=linux/arm64
       - --no-cache
@@ -110,33 +110,33 @@ dockers:
       - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
 
-# archives:
-# - id: archive-linux
-#   builds:
-#     - xbvr-linux-amd64
-#     - xbvr-linux-arm64
-#   replacements:
-#     linux: Linux
-#     windows: Windows
-#     amd64: x86_64
-# - id: archive-win
-#   builds:
-#     - xbvr-windows
-#   format: zip
-#   replacements:
-#     windows: Windows
-# - id: archive-mac
-#   builds:
-#     - xbvr-mac-intel
-#     - xbvr-mac-m1
-#   format: zip
-#   replacements:
-#     darwin: macOS
-#     amd64: intel
-#     arm64: m1
-# #  files:
-# #    - XBVR.app/Contents/Resources/XBVR.icns
-# #    - XBVR.app/Contents/Info.plist
+archives:
+- id: archive-linux
+  builds:
+    - xbvr-linux-amd64
+    - xbvr-linux-arm64
+  replacements:
+    linux: Linux
+    windows: Windows
+    amd64: x86_64
+- id: archive-win
+  builds:
+    - xbvr-windows
+  format: zip
+  replacements:
+    windows: Windows
+- id: archive-mac
+  builds:
+    - xbvr-mac-intel
+    - xbvr-mac-m1
+  format: zip
+  replacements:
+    darwin: macOS
+    amd64: intel
+    arm64: m1
+#  files:
+#    - XBVR.app/Contents/Resources/XBVR.icns
+#    - XBVR.app/Contents/Info.plist
 
 snapshot:
   name_template: "{{ .Tag }}-next"
@@ -165,4 +165,4 @@ release:
   disable: false
   github:
     owner: "{{.Env.GITHUB_USER}}"
-    name: "xbvr"
+    name: "{{.Env.GITHUB_PROJECT}}"

@@ -23,18 +23,14 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
-      - name: Print event data
-        env:
-          EVENT: ${{ toJSON( github.event ) }}
-        run: echo "$EVENT"
-
       - name: Build UI
         run:  cd ui && yarn install && yarn build
 
       - name: Setup release environment
         run: |-
           echo 'GITHUB_TOKEN=${{secrets.GORELEASER_ACCESS_TOKEN}}' > .release-env
-          echo 'GITHUB_USER=${{env.GITHUB_USER}}' >> .release-env
+          echo 'GITHUB_USER=${{github.event.repository.owner.login}}' >> .release-env
+          echo 'GITHUB_PROJECT=${{github.event.repository.name}}' >> .release-env
 
       - name: Release publish
         run: make release
