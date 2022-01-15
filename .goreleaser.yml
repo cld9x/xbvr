@@ -141,6 +141,9 @@ dockers:
 snapshot:
   name_template: "{{ .Tag }}-next"
 
+checksum:
+  name_template: "checksums.txt"
+
 changelog:
   use: github
   sort: asc

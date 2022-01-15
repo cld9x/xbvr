@@ -23,6 +23,11 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
+      - name: Print event data
+        env:
+          EVENT: ${{ toJSON( github.event ) }}
+        run: echo "$EVENT"
+
       - name: Build UI
         run:  cd ui && yarn install && yarn build
 
