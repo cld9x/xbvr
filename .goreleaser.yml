@@ -2,7 +2,7 @@ before:
   hooks:
     - go mod download
     - go generate ./...
-    - echo $GITHUB_TOKEN | docker login ghcr.io -u $GITHUB_USER --password-stdin
+    - echo {{.Env.GITHUB_TOKEN}} | docker login ghcr.io -u {{.Env.GITHUB_USER}} --password-stdin
 
 builds:
 - id: xbvr-mac-intel
@@ -155,11 +155,11 @@ changelog:
       order: 999
   filters:
     exclude:
-    - '^docs:'
-    - '^test:'
+    - "^docs:"
+    - "^test:"
 
 release:
   disable: false
   github:
-    owner: cld9x
-    name: xbvr
+    owner: "{{.Env.GITHUB_USER}}"
+    name: "xbvr"
