@@ -126,15 +126,25 @@ archives:
   builds:
     - xbvr-linux-amd64
     - xbvr-linux-arm64
+  replacements:
+    linux: Linux
+    windows: Windows
+    amd64: x86_64
 - id: archive-win
   builds:
     - xbvr-windows
   format: zip
+  replacements:
+    windows: Windows
 - id: archive-mac
   builds:
     - xbvr-mac-intel
     - xbvr-mac-m1
   format: zip
+  replacements:
+    darwin: macOS
+    amd64: intel
+    arm64: m1
 #  files:
 #    - XBVR.app/Contents/Resources/XBVR.icns
 #    - XBVR.app/Contents/Info.plist
