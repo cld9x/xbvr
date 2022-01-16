@@ -32,16 +32,9 @@ jobs:
           echo 'GITHUB_TOKEN=${{secrets.GORELEASER_ACCESS_TOKEN}}' > .release-env
           echo 'GITHUB_USER=${{github.event.repository.owner.login}}' >> .release-env
           echo 'GITHUB_PROJECT=${{github.event.repository.name}}' >> .release-env
+          echo 'DOCKER_USERNAME=${{github.event.repository.owner.login}}' >> .release-env
+          echo 'DOCKER_PASSWORD=${{secrets.GORELEASER_ACCESS_TOKEN}}' >> .release-env
+          echo 'DOCKER_HOST=ghcr.io' >> .release.env
 
       - name: Release publish
         run: make release
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{github.event.repository.owner.login}}
-          password: ${{secrets.GORELEASER_ACCESS_TOKEN}}
-
-      - name: Push
-        run: docker push -a ghcr.io/${{github.event.repository.owner.login}}/${{github.event.repository.name}}
