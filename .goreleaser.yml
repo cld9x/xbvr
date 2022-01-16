@@ -116,10 +116,12 @@ dockers:
 
 docker_manifests:
   - name_template: ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}
+    skip_push: true
     image_templates:
       - ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}-amd64
       - ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}-arm64
   - name_template: ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:latest
+    skip_push: true
     image_templates:
       - ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}-amd64
       - ghcr.io/{{.Env.GITHUB_USER}}/{{.Env.GITHUB_PROJECT}}:{{ .Version }}-arm64
