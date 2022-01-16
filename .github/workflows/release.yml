@@ -34,7 +34,7 @@ jobs:
           echo 'GITHUB_PROJECT=${{github.event.repository.name}}' >> .release-env
           echo 'DOCKER_USERNAME=${{github.event.repository.owner.login}}' >> .release-env
           echo 'DOCKER_PASSWORD=${{secrets.GORELEASER_ACCESS_TOKEN}}' >> .release-env
-          echo 'DOCKER_HOST=ghcr.io' >> .release.env
+          echo 'DOCKER_HOST=ghcr.io' >> .release-env
 
       - name: Release publish
         run: make release
