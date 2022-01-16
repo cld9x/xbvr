@@ -84,6 +84,7 @@ dockers:
   -
     use: buildx
     dockerfile: Dockerfile
+    skip_push: true
     goos: linux
     goarch: amd64
     image_templates:
@@ -98,6 +99,7 @@ dockers:
   -
     use: buildx
     dockerfile: Dockerfile
+    skip_push: true
     goos: linux
     goarch: arm64
     image_templates:
@@ -163,6 +165,3 @@ changelog:
 
 release:
   disable: false
-  github:
-    owner: "{{.Env.GITHUB_USER}}"
-    name: "{{.Env.GITHUB_PROJECT}}"
